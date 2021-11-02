@@ -56,7 +56,7 @@ struct ARContainerView: UIViewRepresentable {
         Coordinator()
     }
 
-    class Coordinator: NSObject, ARSessionDelegate {
+    class Coordinator: NSObject, ARSessionDelegate, FocusEntityDelegate {
         weak var view: ARView?
         var focusEntity: FocusEntity?
         var diceEntity: ModelEntity?
@@ -65,6 +65,7 @@ struct ARContainerView: UIViewRepresentable {
             guard let view = self.view else { return }
             print("Anchor added to the scene: ", anchors)
             self.focusEntity = FocusEntity(on: view, style: .classic(color: .yellow))
+            self.focusEntity?.delegate = self
         }
 
         @objc func handleTap() {
@@ -111,6 +112,13 @@ struct ARContainerView: UIViewRepresentable {
 
                 self.diceEntity = diceEntity
             }
+        }
+
+        func toTrackingState() {
+          print("tracking")
+        }
+        func toInitializingState() {
+          print("initializing")
         }
     }
 }
